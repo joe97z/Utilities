@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.FileStreamer", "AspNetCore.FileStreamer\AspNetCore.FileStreamer.csproj", "{A6800A78-B0AF-477A-9AF6-925319C65995}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6800A78-B0AF-477A-9AF6-925319C65995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6800A78-B0AF-477A-9AF6-925319C65995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6800A78-B0AF-477A-9AF6-925319C65995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6800A78-B0AF-477A-9AF6-925319C65995}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D1981E88-8F0A-4C0C-9148-E4703E5D8368}
+	EndGlobalSection
+EndGlobal
