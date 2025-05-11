@@ -4,7 +4,7 @@
 	  <TargetFramework>net9.0</TargetFramework>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Nullable>enable</Nullable>
-	  <PackageId>JsonLocalizer</PackageId>
+	  <PackageId>Localizer.Json</PackageId>
 	  <Version>1.0.0</Version>
 	  <Authors>Hovsep Dishoyan</Authors>
 	  <Description>A library for Using Json files for localization</Description>

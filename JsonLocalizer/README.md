@@ -1,6 +1,6 @@
-# JsonLocalizer
+# Localizer.Json
 
-JsonLocalizer is a lightweight library for enabling JSON-based localization in ASP.NET Core applications. It provides extension methods to configure localization services and middleware, allowing you to manage translations using JSON files.
+Localizer.Json is a lightweight library for enabling JSON-based localization in ASP.NET Core applications. It provides extension methods to configure localization services and middleware, allowing you to manage translations using JSON files.
 
 ## Prerequisites
 
@@ -9,7 +9,7 @@ JsonLocalizer is a lightweight library for enabling JSON-based localization in A
 
 ## Installation
 
-1. Add the `JsonLocalizer` namespace to your project by including the provided `JsonLocalizationExtension.cs` file in your solution.
+1. Add the `Localizer.Json` namespace to your project by including the provided `JsonLocalizationExtension.cs` file in your solution.
 
 2. Ensure the following NuGet packages are installed in your project:
    - `Microsoft.Extensions.Localization`
@@ -61,7 +61,7 @@ Example content for `localization.fr.json`:
 In your `Program.cs` or `Startup.cs`, configure the JSON-based localization by adding the following code:
 
 ```csharp
-using JsonLocalizer;
+using Localizer.Json;
 using System.Globalization;
 
 // Create a new web application builder
