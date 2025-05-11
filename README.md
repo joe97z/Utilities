@@ -12,3 +12,5 @@ A collection of useful utility NuGet packages for .NET development.
    - Details: [Localizer.Json Readme](https://github.com/joe97z/Utitlites/tree/master/JsonLocalizer/README.md)
 4. **GpxParser**  
    - Details: [GpxParser Readme](https://github.com/joe97z/Utitlites/tree/master/GPXFileReader/README.md)
+5. **PathsFinder**  
+   - Details: [GpxParser Readme](https://github.com/joe97z/Utitlites/tree/master/PathsFinder/README.md)
