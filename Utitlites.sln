@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLog", "AutoLog\AutoLog.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonLocalizer", "JsonLocalizer\JsonLocalizer.csproj", "{12CD6823-4139-423E-B869-E46BFC5A725C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPXFileReader", "GPXFileReader\GPXFileReader.csproj", "{5E546690-F8FA-42AF-BCDB-51FF8B7ADDF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{12CD6823-4139-423E-B869-E46BFC5A725C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12CD6823-4139-423E-B869-E46BFC5A725C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12CD6823-4139-423E-B869-E46BFC5A725C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E546690-F8FA-42AF-BCDB-51FF8B7ADDF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E546690-F8FA-42AF-BCDB-51FF8B7ADDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E546690-F8FA-42AF-BCDB-51FF8B7ADDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E546690-F8FA-42AF-BCDB-51FF8B7ADDF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
