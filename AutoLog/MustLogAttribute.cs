@@ -8,7 +8,7 @@
 /// The attribute supports custom logging configurations, such as logging specific headers or the request/response body, when used with <see cref="LogLevelOption.Custom"/>.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
-public class MustLogAttribute(LogLevelOption logLevel = LogLevelOption.Basic, string[] customHeaders = null, bool logBody = false) : Attribute
+public class MustLogAttribute(LogLevelOption logLevel = LogLevelOption.Basic, string[]? customHeaders = null, bool logBody = false) : Attribute
 {
     /// <summary>
     /// Gets the logging level that determines the amount and type of information to log.

@@ -68,7 +68,7 @@ public class LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> 
         }
     }
 
-    private (LogLevelOption LogLevel, string[] CustomHeaders, bool LogBody) GetLogLevelOptions(ControllerActionDescriptor actionDescriptor)
+    private static (LogLevelOption LogLevel, string[] CustomHeaders, bool LogBody) GetLogLevelOptions(ControllerActionDescriptor actionDescriptor)
     {
         var attribute = actionDescriptor.MethodInfo
             .GetCustomAttributes(typeof(MustLogAttribute), false)
