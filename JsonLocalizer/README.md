@@ -4,7 +4,7 @@ JsonLocalizer is a lightweight library for enabling JSON-based localization in A
 
 ## Prerequisites
 
-- .NET SDK 8.0 or later
+- .NET SDK 9.0
 - ASP.NET Core application
 
 ## Installation
