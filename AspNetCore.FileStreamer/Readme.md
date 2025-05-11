@@ -1,4 +1,4 @@
-# StreamingFileHandler – ASP.NET Core Streaming Utility
+# StreamFlex.AspNetCore – ASP.NET Core Streaming Utility
 
 ## Overview
 StreamingFileHandler is a lightweight, production-ready utility for efficiently streaming large files or data streams (e.g., videos, documents) over HTTP in ASP.NET Core Web APIs.
@@ -13,7 +13,7 @@ It provides support for:
 You can install the package from NuGet:
 
 ```bash
-dotnet add package StreamingFileHandler --version 1.0.0
+dotnet add package StreamFlex.AspNetCore
 ```
 
 ## Usage
@@ -112,6 +112,3 @@ Feel free to fork the repository, file issues, or submit pull requests for impro
 
 ## 📄 Changelog
 **v1.0.0** - Initial release with support for file streaming and HTTP range requests.
-
-## 📬 Contact
-For questions or support, open an issue in the GitHub repository or contact me directly at youremail@example.com.
