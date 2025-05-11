@@ -13,4 +13,4 @@ A collection of useful utility NuGet packages for .NET development.
 4. **GpxParser**  
    - Details: [GpxParser Readme](https://github.com/joe97z/Utitlites/tree/master/GPXFileReader/README.md)
 5. **PathsFinder**  
-   - Details: [GpxParser Readme](https://github.com/joe97z/Utitlites/tree/master/PathsFinder/README.md)
+   - Details: [PathsFinder Readme](https://github.com/joe97z/Utitlites/tree/master/PathsFinder/README.md)
