@@ -1,6 +1,6 @@
 # Utitlities
 
-## Description
+## About
 A collection of useful utility NuGet packages for .NET development.
 
 ## Packages
