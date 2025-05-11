@@ -58,7 +58,7 @@ public class Startup
 Use the `MustLog` attribute on controllers or action methods to enable logging with the desired log level.
 
 ```csharp
-using AutoLogger.Logging;
+using AutoLogger
 
 // Basic logging: Logs HTTP method, URL, and status code
 [MustLog(LogLevelOption.Basic)]
