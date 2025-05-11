@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net9.0</TargetFramework>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+	  <PackageId>PathsFinder</PackageId>
+	  <Version>1.0.0</Version>
+	  <Authors>Hovsep Dishoyan</Authors>
+	  <Description>A library for Finding Shortest Paths using Geocoodinates</Description>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <TargetFramework>net9.0</TargetFramework>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
+</Project>
