@@ -1,7 +1,7 @@
 # StreamFlex.AspNetCore – ASP.NET Core Streaming Utility
 
 ## Overview
-StreamingFileHandler is a lightweight, production-ready utility for efficiently streaming large files or data streams (e.g., videos, documents) over HTTP in ASP.NET Core Web APIs.
+StreamFlex.AspNetCore is a lightweight, production-ready utility for efficiently streaming large files or data streams (e.g., videos, documents) over HTTP in ASP.NET Core Web APIs.
 
 It provides support for:
 - Range requests for seeking through large files (e.g., videos)
