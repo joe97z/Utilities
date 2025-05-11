@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.FileStreamer", "AspNetCore.FileStreamer\AspNetCore.FileStreamer.csproj", "{A6800A78-B0AF-477A-9AF6-925319C65995}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLog", "AutoLog\AutoLog.csproj", "{F0C8D4E2-7778-4192-9A80-D3BC4F58BE74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A6800A78-B0AF-477A-9AF6-925319C65995}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6800A78-B0AF-477A-9AF6-925319C65995}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6800A78-B0AF-477A-9AF6-925319C65995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0C8D4E2-7778-4192-9A80-D3BC4F58BE74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0C8D4E2-7778-4192-9A80-D3BC4F58BE74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0C8D4E2-7778-4192-9A80-D3BC4F58BE74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0C8D4E2-7778-4192-9A80-D3BC4F58BE74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
