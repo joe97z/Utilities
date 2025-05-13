@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPXFileReader", "GPXFileRea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathsFinder", "PathsFinder\PathsFinder.csproj", "{2C2DB247-65E3-4579-8A67-8A556B70441B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeySafe.Licensing", "KeySafe.Licensing\KeySafe.Licensing.csproj", "{219D273A-E6A7-4816-86DA-598BC540D05F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{2C2DB247-65E3-4579-8A67-8A556B70441B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C2DB247-65E3-4579-8A67-8A556B70441B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C2DB247-65E3-4579-8A67-8A556B70441B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{219D273A-E6A7-4816-86DA-598BC540D05F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{219D273A-E6A7-4816-86DA-598BC540D05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{219D273A-E6A7-4816-86DA-598BC540D05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{219D273A-E6A7-4816-86DA-598BC540D05F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
