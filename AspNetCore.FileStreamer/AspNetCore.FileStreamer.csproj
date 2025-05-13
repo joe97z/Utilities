@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<PackageId>StreamFlex.AspNetCore</PackageId>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 		<Authors>Hovsep Dishoyan</Authors>
 		<Description>A library for streaming files with HTTP range request support in ASP.NET Core.</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>

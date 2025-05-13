@@ -8,7 +8,7 @@
 /// The attribute supports custom logging configurations, such as logging specific headers or the request/response body, when used with <see cref="LogLevelOption.Custom"/>.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
-public class MustLogAttribute(LogLevelOption logLevel = LogLevelOption.Basic, string[]? customHeaders = null, bool logBody = false) : Attribute
+public class MustLogAttribute(LogLevelOption logLevel = LogLevelOption.Basic, string[]? customHeaders = null, bool logBody = false,bool logQuery = false) : Attribute
 {
     /// <summary>
     /// Gets the logging level that determines the amount and type of information to log.
@@ -38,7 +38,19 @@ public class MustLogAttribute(LogLevelOption logLevel = LogLevelOption.Basic, st
     /// </value>
     /// <remarks>
     /// Body logging is only performed when <see cref="LogLevel"/> is <see cref="LogLevelOption.Custom"/> and this property is <c>true</c>,
-    /// or when the log level is <see cref="LogLevelOption.Full"/> or <see cref="LogLevelOption.All"/>.
+    /// or when the log level is <see cref="LogLevelOption.Full"/>, <see cref="LogLevelOption.All"/> or <see cref="LogLevelOption.Body"/> .
     /// </remarks>
     public bool LogBody { get; } = logBody;
+
+    /// <summary>
+    /// Gets a value indicating whether to log the request query using <see cref="LogLevelOption.Custom"/>.
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if the request query should be logged; otherwise, <c>false</c>. Defaults to <c>false</c>.
+    /// </value>
+    /// <remarks>
+    /// query logging is only performed when <see cref="LogLevel"/> is <see cref="LogLevelOption.Custom"/> and this property is <c>true</c>,
+    /// or when the log level is <see cref="LogLevelOption.Full"/> , <see cref="LogLevelOption.All"/> or  or   <see cref="LogLevelOption.Query"/>.
+    /// </remarks>
+    public bool LogQuery { get; } = logQuery;
 }

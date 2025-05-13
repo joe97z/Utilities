@@ -6,7 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>autologger</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.1.0</Version>
 		<Authors>Hovsep Dishoyan</Authors>
 		<Description>A library for logging requests and responses</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>

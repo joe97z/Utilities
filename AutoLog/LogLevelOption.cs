@@ -41,6 +41,15 @@ public enum LogLevelOption
     /// </remarks>
     Query,
 
+
+    /// <summary>
+    /// Logs request and response bodies.
+    /// </summary>
+    /// <remarks>
+    /// Useful for analyzing bodies in both request and response.
+    /// </remarks>
+    Body,
+
     /// <summary>
     /// Logs detailed information, including the HTTP method, URL path, headers, and request/response bodies.
     /// </summary>

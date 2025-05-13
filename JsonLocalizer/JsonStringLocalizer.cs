@@ -46,7 +46,7 @@ internal class JsonStringLocalizer(IDistributedCache cache) : IStringLocalizer
     }
     private string? GetString(string key)
     {
-        string relativeFilePath = $"Localization/Localization.{Thread.CurrentThread.CurrentCulture.Name}.json";
+        string relativeFilePath = $"Localizations/Localization.{Thread.CurrentThread.CurrentCulture.Name}.json";
         string fullFilePath = Path.GetFullPath(relativeFilePath);
         if (File.Exists(fullFilePath))
         {

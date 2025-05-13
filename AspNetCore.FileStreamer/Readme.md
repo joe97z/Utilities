@@ -1,3 +1,4 @@
+
 # StreamFlex.AspNetCore – ASP.NET Core Streaming Utility
 
 ## Overview
@@ -23,17 +24,25 @@ dotnet add package StreamFlex.AspNetCore
 [HttpGet("video/{fileName}")]
 public async Task<IActionResult> StreamVideo(string fileName, CancellationToken ct)
 {
-    var filePath = Path.Combine("Media", "Videos", fileName);
+    try
+    {
+        var filePath = Path.Combine("Media", "Videos", fileName);
 
-    await FileStreamingHelper.StreamFileAsync(
-        HttpContext,
-        filePath,
-        downloadFileName: fileName,
-        enableRangeProcessing: true,
-        cancellationToken: ct
-    );
+        await FileStreamingHelper.StreamFileAsync(
+            HttpContext,
+            filePath,
+            downloadFileName: fileName,
+            enableRangeProcessing: true,
+            cancellationToken: ct
+        );
 
-    return new EmptyResult();
+        return new EmptyResult();
+    }
+    catch (OperationCanceledException) when (ct.IsCancellationRequested)
+    {
+        _logger.LogInformation("Video stream was canceled by the client: {FileName}", fileName);
+        return new EmptyResult();
+    }
 }
 ```
 
@@ -42,18 +51,27 @@ public async Task<IActionResult> StreamVideo(string fileName, CancellationToken 
 [HttpGet("document/{fileName}")]
 public async Task<IActionResult> DownloadFile(string fileName, CancellationToken ct)
 {
-    var filePath = Path.Combine("Media", "Documents", fileName);
+    try
+    {
+        var filePath = Path.Combine("Media", "Documents", fileName);
 
-    await FileStreamingHelper.StreamFileAsync(
-        HttpContext,
-        filePath,
-        downloadFileName: fileName,
-        enableRangeProcessing: false,
-        cancellationToken: ct
-    );
+        await FileStreamingHelper.StreamFileAsync(
+            HttpContext,
+            filePath,
+            downloadFileName: fileName,
+            enableRangeProcessing: false,
+            cancellationToken: ct
+        );
 
-    return new EmptyResult();
+        return new EmptyResult();
+    }
+    catch (OperationCanceledException) when (ct.IsCancellationRequested)
+    {
+        _logger.LogInformation("Document download was canceled by the client: {FileName}", fileName);
+        return new EmptyResult();
+    }
 }
+
 ```
 
 ## API Reference

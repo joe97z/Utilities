@@ -1,9 +1,9 @@
-# AspNetCore.Logging
+# AutoLogger
 
 A flexible and customizable logging middleware for ASP.NET Core applications. This NuGet package provides a robust system to log HTTP requests and responses with configurable granularity, using attributes to control logging behavior at the controller or action level.
 
 ## Features
-- **Configurable Log Levels**: Choose from multiple logging levels (`None`, `Basic`, `Headers`, `Query`, `Full`, `All`, `Custom`) to control the amount of information logged.
+- **Configurable Log Levels**: Choose from multiple logging levels (`None`, `Basic`, `Headers`, `Query`, `Body`, `Full`, `All`, `Custom`) to control the amount of information logged.
 - **Attribute-Based Configuration**: Use the `MustLog` attribute to specify logging behavior for controllers or actions.
 - **Custom Logging**: Log specific headers or request/response bodies with the `Custom` log level.
 - **Seamless Integration**: Integrates with ASP.NET Core’s middleware pipeline and logging infrastructure.
@@ -33,32 +33,27 @@ Install-Package AutoLogger
 ## Getting Started
 
 ### Step 1: Register the Middleware
-In your `Startup.cs` or `Program.cs`, register the `LoggingMiddleware` in the ASP.NET Core pipeline.
+In your `Program.cs`, register the `LoggingMiddleware` in the ASP.NET Core pipeline.
 
 ```csharp
-public class Startup
-{
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddControllers();
-        // Ensure a logging provider is configured
-        services.AddLogging(logging => logging.AddConsole());
-    }
+using AutoLogger;
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        app.UseMiddleware<AutoLogger.LoggingMiddleware>();
-        app.UseRouting();
-        app.UseEndpoints(endpoints => endpoints.MapControllers());
-    }
-}
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+builder.Services.AddLogging(logging => logging.AddConsole());
+
+var app = builder.Build();
+app.UseMiddleware<LoggingMiddleware>();
+app.UseRouting();
+app.UseEndpoints(endpoints => endpoints.MapControllers());
+app.Run();
 ```
 
 ### Step 2: Apply the `MustLog` Attribute
 Use the `MustLog` attribute on controllers or action methods to enable logging with the desired log level.
 
 ```csharp
-using AutoLogger
+using AutoLogger;
 
 // Basic logging: Logs HTTP method, URL, and status code
 [MustLog(LogLevelOption.Basic)]
@@ -68,26 +63,26 @@ public class BasicController : ControllerBase
     public IActionResult GetBasic() => Ok("Basic response");
 }
 
-// Custom logging: Logs specific headers and body
-[MustLog(LogLevelOption.Custom, new[] { "Authorization", "Content-Type" }, logBody: true)]
+// Custom logging: Logs specific headers, body and query
+[MustLog(LogLevelOption.Custom, new[] { "Authorization", "Content-Type" }, logBody: true, logQuery: true)]
 public class CustomController : ControllerBase
 {
     [HttpPost("custom")]
-    public IActionResult PostCustom([FromBody] string data) => Ok("Custom response");
+    public IActionResult PostCustom([—fromBody] string data) => Ok("Custom response");
 }
 ```
 
 ### Step 3: Configure Logging
-Ensure your `appsettings.json` or logging configuration enables the `Information` log level for the middleware.
+Ensure your `appsettings.json` enables the `Information` log level for the middleware.
 
 ```json
 {
-    "Logging": {
-        "LogLevel": {
-            "Default": "Information",
-            "AspNetCore.Logging.LoggingMiddleware": "Information"
-        }
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "AspNetCore.Logging.LoggingMiddleware": "Information"
     }
+  }
 }
 ```
 
@@ -100,8 +95,9 @@ The package supports the following log levels, defined in the `LogLevelOption` e
 | `Basic`   | Minimal info | Method, URL | Status code |
 | `Headers` | Headers only | Headers | Headers |
 | `Query`   | Query params | Query parameters | None |
+| `Body`    | Body only | Body | Body |
 | `Full`    | Detailed info | Method, URL, headers, body | Status code, headers, body |
-| `All`     | Everything | Method, URL, headers, body, query params | Status code, headers, body |
+| `All`     | Comprehensive | Method, URL, query params, body | Status code, body |
 | `Custom`  | Selective logging | Specific headers/body (configurable) | Specific headers/body (configurable) |
 
 ## Usage Examples
@@ -124,22 +120,22 @@ INFO: Request: GET /basic
 INFO: Response: 200
 ```
 
-### Example 2: Headers Logging
-Log request and response headers.
+### Example 2: Body Logging
+Log only the request and response bodies.
 
 ```csharp
-[MustLog(LogLevelOption.Headers)]
-public class HeadersController : ControllerBase
+[MustLog(LogLevelOption.Body)]
+public class BodyController : ControllerBase
 {
-    [HttpGet("headers")]
-    public IActionResult GetHeaders() => Ok("Headers response");
+    [HttpPost("body")]
+    public IActionResult PostBody([FromBody] string data) => Ok("Body response");
 }
 ```
 
 **Log Output**:
 ```
-INFO: Request Headers: [Host: localhost, Accept: */*]
-INFO: Response Headers: [Content-Type: text/plain; charset=utf-8]
+INFO: Request Body: {"data":"example"}
+INFO: Response Body: Body response
 ```
 
 ### Example 3: Custom Logging
@@ -165,7 +161,7 @@ INFO: Response Body: Custom response
 ## Configuration
 
 ### Logging Provider
-The middleware uses `ILogger<LoggingMiddleware>`. Configure your preferred logging provider (e.g., Console, Serilog, NLog) in `ConfigureServices`.
+The middleware uses `ILogger<LoggingMiddleware>`. Configure your preferred logging provider (e.g., Console, Serilog, NLog) in the service configuration.
 
 ### Security Considerations
 - **Sensitive Data**: Avoid logging sensitive headers (e.g., `Authorization`) or bodies containing personal data. Use the `Custom` log level to selectively log non-sensitive information.
@@ -178,9 +174,17 @@ The middleware uses `ILogger<LoggingMiddleware>`. Configure your preferred loggi
 ## Troubleshooting
 
 - **No Logs**: Verify the `MustLog` attribute is applied and the middleware is registered. Ensure the logger’s log level is `Information` or lower.
-- **Body Not Logged**: Confirm the request/response content type is supported (e.g., JSON, text) and `logBody` is `true` for `Custom` level.
+- **Body Not Logged**: Confirm the request/response content type is supported (e.g., JSON, text) and `logBody` is `true` for `Custom` or `Body` levels.
 - **Stream Issues**: Ensure streams are properly reset after logging to avoid pipeline errors.
 
+## Changelog
+### Version 1.1.0
+- **Added**: `Body` log level to log only request/response bodies.
+- **Added**: `logQuery` parameter to log queries if custom
+- **Fixed**: Bug in body reading that caused unexpected errors.
+- **Changed**: `LogLevelOption.All` now ignores headers instead of query parameters, logging method, URL, query params, and bodies.
+
+See the full [Changelog](CHANGELOG.md) for details.
 
 ## License
 This package is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Logging;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace AutoLog;
 /// <summary>
@@ -41,7 +43,7 @@ public class LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> 
 
         if (actionDescriptor != null)
         {
-            var (logLevelOption, customHeaders, logBody) = GetLogLevelOptions(actionDescriptor);
+            var (logLevelOption, customHeaders, logBody, logQuery) = GetLogLevelOptions(actionDescriptor);
 
             if (logLevelOption == LogLevelOption.None)
             {
@@ -49,7 +51,7 @@ public class LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> 
                 return;
             }
 
-            LogRequest(context, logLevelOption, customHeaders, logBody);
+            await LogRequest(context, logLevelOption, customHeaders, logBody, logQuery);
 
             var originalResponseBody = context.Response.Body;
             using var memoryStream = new MemoryStream();
@@ -57,7 +59,7 @@ public class LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> 
 
             await _next(context);
 
-            LogResponse(context, memoryStream, logLevelOption, customHeaders, logBody);
+            await LogResponse(context, memoryStream, logLevelOption, customHeaders, logBody);
 
             memoryStream.Seek(0, SeekOrigin.Begin);
             await memoryStream.CopyToAsync(originalResponseBody);
@@ -68,7 +70,7 @@ public class LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> 
         }
     }
 
-    private static (LogLevelOption LogLevel, string[] CustomHeaders, bool LogBody) GetLogLevelOptions(ControllerActionDescriptor actionDescriptor)
+    private static (LogLevelOption LogLevel, string[] CustomHeaders, bool LogBody, bool logQuery) GetLogLevelOptions(ControllerActionDescriptor actionDescriptor)
     {
         var attribute = actionDescriptor.MethodInfo
             .GetCustomAttributes(typeof(MustLogAttribute), false)
@@ -82,42 +84,48 @@ public class LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> 
         return (
             attribute?.LogLevel ?? LogLevelOption.Basic,
             attribute?.CustomHeaders ?? [],
-            attribute?.LogBody ?? false
+            attribute?.LogBody ?? false,
+            attribute?.LogQuery ?? false
         );
     }
 
-    private void LogRequest(HttpContext context, LogLevelOption logLevel, string[] customHeaders, bool logBody)
+    private void LogRequestPath(HttpContext context, LogLevelOption logLevel)
     {
-        if (logLevel == LogLevelOption.Basic || logLevel == LogLevelOption.Full || logLevel == LogLevelOption.All)
-        {
-            _logger.LogInformation("Request: {Method} {Url}", context.Request.Method, context.Request.Path);
-        }
+        _logger.LogInformation("Request: {Method} {Url}", context.Request.Method, context.Request.Path);
+    }
 
-        if (logLevel == LogLevelOption.Headers || logLevel == LogLevelOption.Full || logLevel == LogLevelOption.All ||
-            logLevel == LogLevelOption.Custom && customHeaders.Length > 0)
+    private void LogRequestHeader(HttpContext context, LogLevelOption logLevel, string[] customHeaders)
+    {
+        var shouldLogHeader = logLevel == LogLevelOption.Headers || logLevel == LogLevelOption.Full ||
+                              logLevel == LogLevelOption.Custom && customHeaders.Length > 0;
+        if (shouldLogHeader)
         {
-            var headersToLog = logLevel == LogLevelOption.Custom && customHeaders.Length > 0
-                ? string.Join(", ", context.Request.Headers
-                    .Where(h => customHeaders.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
-                    .Select(h => $"{h.Key}: {h.Value}"))
-                : context.Request.Headers.ToString();
+            var shouldFilterHeaders = customHeaders.Length > 0;
+            string headersToLog;
+            if (shouldFilterHeaders)
+            {
+                headersToLog = string.Join(", ", context.Request.Headers
+                     .Where(h => customHeaders.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
+                     .Select(h => $"{h.Key}: {h.Value}"));
+            }
+            else
+            {
+                headersToLog = string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}: {h.Value}"));
+            }
 
             _logger.LogInformation("Request Headers: {Headers}", headersToLog);
         }
+    }
 
-        if (logLevel == LogLevelOption.Query || logLevel == LogLevelOption.All)
-        {
-            var queryParams = context.Request.QueryString.HasValue
-                ? context.Request.QueryString.Value
-                : "No query parameters";
-            _logger.LogInformation("Query Parameters: {Query}", queryParams);
-        }
-
-        if (logLevel == LogLevelOption.Full || logLevel == LogLevelOption.All || logLevel == LogLevelOption.Custom && logBody)
+    private async Task LogRequestBody(HttpContext context, LogLevelOption logLevel, bool logBody)
+    {
+        var shouldLogBody = logLevel == LogLevelOption.Full || logLevel == LogLevelOption.All || 
+                            logLevel == LogLevelOption.Custom && logBody;
+        if (shouldLogBody)
         {
             context.Request.EnableBuffering();
             using var reader = new StreamReader(context.Request.Body);
-            var body = reader.ReadToEnd();
+            var body = await reader.ReadToEndAsync();
             if (!string.IsNullOrEmpty(body))
             {
                 _logger.LogInformation("Request Body: {Body}", body);
@@ -125,34 +133,71 @@ public class LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> 
             context.Request.Body.Position = 0;
         }
     }
-
-    private void LogResponse(HttpContext context, MemoryStream memoryStream, LogLevelOption logLevel, string[] customHeaders, bool logBody)
+    private void LogRequestQuery(HttpContext context, LogLevelOption logLevel, bool logQuery)
     {
-        if (logLevel == LogLevelOption.Basic || logLevel == LogLevelOption.Full || logLevel == LogLevelOption.All)
+        var shouldLogQuery = logLevel == LogLevelOption.Query || logLevel == LogLevelOption.All || 
+                             logLevel == LogLevelOption.Full || logLevel == LogLevelOption.Custom && logQuery;
+        if (shouldLogQuery)
         {
-            _logger.LogInformation("Response: {StatusCode}", context.Response.StatusCode);
+            var queryParams = context.Request.QueryString.HasValue
+                ? context.Request.QueryString.Value
+                : "No query parameters";
+            _logger.LogInformation("Query Parameters: {Query}", queryParams);
         }
+    }
 
-        if (logLevel == LogLevelOption.Headers || logLevel == LogLevelOption.Full || logLevel == LogLevelOption.All ||
-            logLevel == LogLevelOption.Custom && customHeaders.Length > 0)
+    private async Task LogRequest(HttpContext context, LogLevelOption logLevel, string[] customHeaders, bool logBody, bool logQuery)
+    {
+        LogRequestPath(context, logLevel);
+        LogRequestHeader(context, logLevel, customHeaders);
+        LogRequestQuery(context, logLevel, logQuery);
+        await LogRequestBody(context, logLevel, logBody);
+    }
+    private void LogResponseStatusCode(HttpContext context, LogLevelOption logLevel)
+    {
+        _logger.LogInformation("Response: {StatusCode}", context.Response.StatusCode);
+    }
+
+    private void LogResponseHeader(HttpContext context, LogLevelOption logLevel, string[] customHeaders)
+    {
+        var shouldLogHeader = logLevel == LogLevelOption.Headers || logLevel == LogLevelOption.Full ||
+                              logLevel == LogLevelOption.Custom && customHeaders.Length > 0;
+        var shouldFilterHeaders = customHeaders.Length > 0;
+        string headersToLog;
+        if (shouldFilterHeaders)
         {
-            var headersToLog = logLevel == LogLevelOption.Custom && customHeaders.Length > 0
-                ? string.Join(", ", context.Response.Headers
-                    .Where(h => customHeaders.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
-                    .Select(h => $"{h.Key}: {h.Value}"))
-                : context.Response.Headers.ToString();
-
-            _logger.LogInformation("Response Headers: {Headers}", headersToLog);
+            headersToLog = string.Join(", ", context.Response.Headers
+                 .Where(h => customHeaders.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
+                 .Select(h => $"{h.Key}: {h.Value}"));
         }
+        else
+        {
+            headersToLog = string.Join(", ", context.Response.Headers.Select(h => $"{h.Key}: {h.Value}"));
+        }
+        _logger.LogInformation("Response Headers: {Headers}", headersToLog);
 
-        if (logLevel == LogLevelOption.Full || logLevel == LogLevelOption.All || logLevel == LogLevelOption.Custom && logBody)
+    }
+
+    private async Task LogResponseBody(MemoryStream memoryStream, LogLevelOption logLevel, bool logBody)
+    {
+        var shouldLogBody = logLevel == LogLevelOption.Full || logLevel == LogLevelOption.All ||
+                            logLevel == LogLevelOption.Custom && logBody;
+        if (shouldLogBody)
         {
             memoryStream.Seek(0, SeekOrigin.Begin);
-            var responseBody = new StreamReader(memoryStream).ReadToEnd();
+            var responseBody = await new StreamReader(memoryStream).ReadToEndAsync();
             if (!string.IsNullOrEmpty(responseBody))
             {
                 _logger.LogInformation("Response Body: {ResponseBody}", responseBody);
             }
         }
+    }
+
+    private async Task LogResponse(HttpContext context, MemoryStream memoryStream, LogLevelOption logLevel, string[] customHeaders, bool logBody)
+    {
+        LogResponseStatusCode(context, logLevel);
+        LogResponseHeader(context, logLevel, customHeaders);
+        await LogResponseBody(memoryStream, logLevel, logBody);
+
     }
 }

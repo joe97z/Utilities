@@ -160,3 +160,7 @@ You can use tools like Postman or modify browser language settings to simulate d
 ## License
 
 This project is licensed under the MIT License.
+
+## Changelog
+### Version 1.1.0
+- **Fixed**: Corrected a critical typo in the JsonStringLocalizer class hat could cause incorrect loading of localization files.
