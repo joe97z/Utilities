@@ -1,18 +1,18 @@
 # Utilities
 
 ## About
-A collection of useful utility NuGet packages for .NET development.
+A collection of useful utility NuGet packages for .NET development — all built and maintained by me.
 
 ## Packages
 1. **StramFlex.AspNetCore**  
-   - Details: [StreamFlex.AspNetCore Readme](https://github.com/joe97z/Utitlites/blob/master/AspNetCore.FileStreamer/Readme.md)
+   - Details: [StreamFlex.AspNetCore](https://github.com/joe97z/StreamFlex.AspNetCore)
 2. **AutoLogger**  
-   - Details: [AutoLogger Readme](https://github.com/joe97z/Utitlites/blob/master/AutoLog/README.md)
+   - Details: [AutoLogger](https://github.com/joe97z/Autologger)
 3. **Localizer.Json**  
-   - Details: [Localizer.Json Readme](https://github.com/joe97z/Utitlites/tree/master/JsonLocalizer/README.md)
+   - Details: [Localizer.Json](https://github.com/joe97z/Localizer.Json)
 4. **GpxParser**  
-   - Details: [GpxParser Readme](https://github.com/joe97z/Utitlites/tree/master/GPXFileReader/README.md)
+   - Details: [GpxParser](https://github.com/joe97z/GpxParser)
 5. **PathsFinder**  
-   - Details: [PathsFinder Readme](https://github.com/joe97z/Utitlites/tree/master/PathsFinder/README.md)
+   - Details: [PathsFinder](https://github.com/joe97z/PathsFinder)
 6. **KeySafe.Licensing**  
-   - Details: [KeySafe.Licensing Readme](https://github.com/joe97z/Utitlites/tree/master/KeySafe.Licensing/README.md)
+   - Details: [KeySafe.Licensing](https://github.com/joe97z/KeySafe.Licensing)
